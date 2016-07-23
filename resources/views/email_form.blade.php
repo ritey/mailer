@@ -7,6 +7,11 @@
 @section('content')
 
 	<div class="col-md-12">
+		<a href="{{ route('sites.home', ['id' => $vars['site_id']]) }}">Site options</a>
+		<hr />
+	</div>
+
+	<div class="col-md-12">
 
 		<form method="post" action="{{ $vars['action'] }}" class="form-horizontal" enctype="multipart/form-data">
 

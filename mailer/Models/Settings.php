@@ -47,7 +47,7 @@ class Settings extends Model
 	*
 	* @var 	boolean
 	*/
-	public $timestamps = true;
+	public $timestamps = false;
 
 	/**
 	* The attributes that are mass assignable.

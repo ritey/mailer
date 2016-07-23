@@ -22,8 +22,14 @@ class LogController extends Controller {
 	{
 		$vars = [
 			'legend' => 'Logs',
-			'logs' => $this->logs->orderBy('created_at','DESC')->get(),
+			'logs' => $this->logs->orderBy('created_at','DESC')->paginate(),
 		];
 		return view('logs',compact('vars'));
+	}
+
+	public function clear()
+	{
+		$this->logs->truncate();
+		return redirect()->route('logs.index');
 	}
 }

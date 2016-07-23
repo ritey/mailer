@@ -13,6 +13,10 @@
 
 Route::get('/', ['as' => 'home', 'uses' => 'HomeController@index']);
 
+Route::get('/tags', ['as' => 'tags.index', 'uses' => 'TagsController@index']);
+Route::get('/emails', ['as' => 'emails.index', 'uses' => 'EmailController@index']);
+
+
 Route::get('/settings', ['as' => 'settings.index', 'uses' => 'SettingsController@index']);
 Route::get('/settings/add', ['as' => 'settings.add', 'uses' => 'SettingsController@add']);
 Route::get('/settings/{id}/edit', ['as' => 'settings.edit', 'uses' => 'SettingsController@edit']);
@@ -22,6 +26,7 @@ Route::post('/settings/add', ['as' => 'settings.create', 'uses' => 'SettingsCont
 Route::get('/sites', ['as' => 'sites.index', 'uses' => 'SitesController@index']);
 Route::get('/sites/add', ['as' => 'sites.add', 'uses' => 'SitesController@add']);
 Route::get('/sites/{id}/edit', ['as' => 'sites.edit', 'uses' => 'SitesController@edit']);
+Route::get('/sites/{id}/delete', ['as' => 'sites.delete', 'uses' => 'SitesController@delete']);
 Route::post('/sites/{id}/edit', ['as' => 'sites.update', 'uses' => 'SitesController@update']);
 Route::post('/sites/add', ['as' => 'sites.create', 'uses' => 'SitesController@create']);
 Route::get('/sites/{id}', ['as' => 'sites.home', 'uses' => 'SitesController@home']);
@@ -33,3 +38,4 @@ Route::post('/sites/{id}/send', ['as' => 'sites.emails.mail', 'uses' => 'EmailCo
 Route::get('/sites/{id}/emails', ['as' => 'sites.emails.directory', 'uses' => 'EmailController@emails']);
 
 Route::get('/logs', ['as' => 'logs.index', 'uses' => 'LogController@index']);
+Route::get('/logs/clear', ['as' => 'logs.clear', 'uses' => 'LogController@clear']);

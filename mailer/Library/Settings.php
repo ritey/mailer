@@ -13,12 +13,16 @@ class Settings {
 
 	public function all()
 	{
-		$settings = $this->settings->all();
+		$settings = $this->settings->paginate();
 		return $this->build($settings);
 	}
 
 	public function create($data) {
 		$this->settings->create($data);
+	}
+
+	public function delete($data) {
+		$this->settings->where($data['column'],$data['target'])->delete();
 	}
 
 	public function update($setting_id, $data) {
@@ -28,6 +32,12 @@ class Settings {
 	public function get($setting_id)
 	{
 		$settings = $this->settings->where('id',$setting_id)->get();
+		return $this->build($settings);
+	}
+
+	public function getBySiteId($site_id)
+	{
+		$settings = $this->settings->where('site_id',$site_id)->get();
 		return $this->build($settings);
 	}
 
@@ -47,6 +57,11 @@ class Settings {
 	private function build($settings = [])
 	{
 		$all = [];
+		$links = '';
+
+		if (method_exists($settings, 'links')) {
+			$links = $settings->links();
+		}
 
 		foreach($settings as $item) {
 			$all[] = [
@@ -60,7 +75,7 @@ class Settings {
 			];
 		}
 
-		return $all;
+		return ['all' => $all, 'paginate' => $links];
 	}
 
 }

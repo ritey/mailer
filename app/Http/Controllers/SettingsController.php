@@ -46,7 +46,7 @@ class SettingsController extends Controller {
 	{
 		$setting = $this->settings->get($setting_id);
 		$vars = [
-			'setting' 	=> $setting[0],
+			'setting' 	=> $setting['all'][0],
 			'sites'		=> $this->sites->all(),
 			'legend' 	=> 'Edit a setting',
 			'action' 	=> route('settings.update', ['id' => $setting_id]),

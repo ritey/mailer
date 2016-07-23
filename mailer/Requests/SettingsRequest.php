@@ -25,7 +25,6 @@ class SettingsRequest extends Request {
 	{
 		$rules = [
 			'name' 	=> 'required|max:128',
-			'value'	=> 'required',
 			'site_id' => 'required',
 			'class' => 'required',
 		];

@@ -66,6 +66,11 @@ class Sites extends Model
         return $this->hasMany('Mailer\Models\Settings','id','site_id');
     }
 
+    public function tags()
+    {
+        return $this->belongsToMany('Mailer\Models\Tags','sites_tags','site_id','tag_id');
+    }
+
     public function emails()
     {
         return $this->belongsToMany('Mailer\Models\Emails','emails_sites','site_id','email_id');

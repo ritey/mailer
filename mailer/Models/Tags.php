@@ -61,10 +61,14 @@ class Tags extends Model
 		'name',
 	];
 
-	public function site()
+    public function emails()
     {
-        return $this->hasOne('Mailer\Models\Sites');
+        return $this->belongsToMany('Mailer\Models\Emails','emails_tags','tag_id','email_id');
     }
 
+    public function sites()
+    {
+        return $this->belongsToMany('Mailer\Models\Sites','sites_tags','tag_id','site_id');
+    }
 
 }

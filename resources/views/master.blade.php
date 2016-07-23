@@ -14,7 +14,12 @@
 
 			<div class="col-sm-12">
 				<hr>
-				<a href="/">Home</a> | <a href="{{ route('sites.index') }}">Sites</a> | <a href="{{ route('logs.index') }}">Logs</a> | <a href="{{ route('settings.index') }}">Settings</a>
+				<a href="/">Home</a> |
+				<a href="{{ route('sites.index') }}">Sites</a> |
+				<a href="{{ route('tags.index') }}">Tags</a> |
+				<a href="{{ route('emails.index') }}">Emails</a> |
+				<a href="{{ route('logs.index') }}">Logs</a> |
+				<a href="{{ route('settings.index') }}">Settings</a>
 				<hr>
 			</div>
 
@@ -33,5 +38,8 @@
 			  integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
 			  crossorigin="anonymous"></script>
 	<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+	@yield('footer')
+
 </body>
 </html>

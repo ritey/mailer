@@ -19,7 +19,7 @@
 				<th>Action</th>
 			</tr>
 
-			@foreach($vars['settings'] as $item)
+			@foreach($vars['settings']['all'] as $item)
 			<tr>
 				<td>{{ $item['site_name'] }}</td>
 				<td>{{ $item['class'] }}</td>
@@ -29,6 +29,8 @@
 			@endforeach
 
 		</table>
+
+		{!! $vars['settings']['paginate'] !!}
 
 	</div>
 

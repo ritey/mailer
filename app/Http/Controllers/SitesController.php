@@ -6,6 +6,7 @@ use Request;
 use Response;
 use Mailer\Requests\SitesRequest;
 use Mailer\Models\Sites;
+use Mailer\Library\Settings;
 
 class SitesController extends Controller {
 
@@ -14,9 +15,10 @@ class SitesController extends Controller {
 	 *
 	 * @return void
 	 */
-	public function __construct(Sites $sites)
+	public function __construct(Sites $sites, Settings $settings)
 	{
 		$this->sites = $sites;
+		$this->settings = $settings;
 	}
 
 	/**
@@ -85,6 +87,30 @@ class SitesController extends Controller {
 	{
 		$data = $request->only(['name','enabled']);
 		$return = $this->sites->create($data);
+
+		$settings = [
+			'MAILGUN_FROM_ADDRESS',
+			'MAILGUN_FROM_NAME',
+			'MAILGUN_REPLY_TO',
+			'MAILGUN_SECRET',
+			'MAILGUN_PUBLIC',
+			'MAILGUN_DOMAIN',
+			'MAILGUN_FORCE_FROM_ADDRESS',
+			'MAILGUN_CATCH_ALL',
+			'MAILGUN_TEST_MODE',
+		];
+
+		foreach($settings as $setting) {
+			$data = [
+				'site_id' 		=> $return->id,
+				'name'			=> $setting,
+				'value' 		=> '',
+				'serialized' 	=> 0,
+				'class' 		=> 'config',
+			];
+			$this->settings->create($data);
+		}
+
 		return redirect()->route('sites.index');
 	}
 
@@ -92,6 +118,19 @@ class SitesController extends Controller {
 	{
 		$data = $request->only(['name','enabled']);
 		$return = $this->sites->where('id',$site_id)->update($data);
+		return redirect()->route('sites.index');
+	}
+
+	public function delete($site_id)
+	{
+		if ($site_id) {
+			$this->sites->where('id',$site_id)->delete();
+			$settings = [
+				'column' => 'site_id',
+				'target' => $site_id,
+			];
+			$this->settings->delete($settings);
+		}
 		return redirect()->route('sites.index');
 	}
 }

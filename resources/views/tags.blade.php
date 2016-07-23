@@ -8,25 +8,23 @@
 
 	<div class="col-sm-12">
 
-		<p class="text-right"><a href="{{ route('logs.clear') }}" class="btn btn-info">Clear</a></p>
-
 		<table class="table table-striped table-bordered table-hover table-responsive">
 
 			<tr>
-				<th>Log</th>
+				<th>Tag</th>
 				<th>Added</th>
 			</tr>
 
-			@foreach($vars['logs'] as $item)
+			@foreach($vars['tags'] as $item)
 			<tr>
-				<td>{{ $item->value }}</td>
+				<td>{{ $item->name }}</td>
 				<td>{{ $item->created_at }}</td>
 			</tr>
 			@endforeach
 
 		</table>
 
-		{!! $vars['logs']->links() !!}
+		{!! $vars['tags']->links() !!}
 
 	</div>
 

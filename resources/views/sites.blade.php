@@ -21,7 +21,9 @@
 			<tr>
 				<td>{{ $item->name }}</td>
 				<td>
-					<a href="{{ route('sites.home', ['id' => $item->id]) }}">Enter</a> | <a href="{{ route('sites.edit', ['id' => $item->id]) }}">Edit</a>
+					<a href="{{ route('sites.home', ['id' => $item->id]) }}">Enter</a> |
+					<a href="{{ route('sites.edit', ['id' => $item->id]) }}">Edit</a> |
+					<a href="{{ route('sites.delete', ['id' => $item->id]) }}">Delete</a>
 				</td>
 			</tr>
 			@endforeach
