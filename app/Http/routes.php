@@ -12,10 +12,10 @@
 */
 
 Route::get('/', ['as' => 'home', 'uses' => 'HomeController@index']);
+Route::get('/u/{id}', ['as' => 'unsubscribe', 'uses' => 'EmailController@unsubscribe']);
 
 Route::get('/tags', ['as' => 'tags.index', 'uses' => 'TagsController@index']);
 Route::get('/emails', ['as' => 'emails.index', 'uses' => 'EmailController@index']);
-
 
 Route::get('/settings', ['as' => 'settings.index', 'uses' => 'SettingsController@index']);
 Route::get('/settings/add', ['as' => 'settings.add', 'uses' => 'SettingsController@add']);
@@ -35,7 +35,7 @@ Route::get('/sites/{id}/add', ['as' => 'sites.emails.add', 'uses' => 'EmailContr
 Route::post('/sites/{id}/add', ['as' => 'sites.emails.create', 'uses' => 'EmailController@create']);
 Route::get('/sites/{id}/send', ['as' => 'sites.emails.send', 'uses' => 'EmailController@send']);
 Route::post('/sites/{id}/send', ['as' => 'sites.emails.mail', 'uses' => 'EmailController@mail']);
-Route::get('/sites/{id}/emails', ['as' => 'sites.emails.directory', 'uses' => 'EmailController@emails']);
+Route::get('/sites/{id}/emails/{tag?}', ['as' => 'sites.emails.directory', 'uses' => 'EmailController@emails']);
 
 Route::get('/logs', ['as' => 'logs.index', 'uses' => 'LogController@index']);
 Route::get('/logs/clear', ['as' => 'logs.clear', 'uses' => 'LogController@clear']);

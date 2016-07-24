@@ -7,7 +7,7 @@
 @section('content')
 
 	<div class="col-md-12">
-		<a href="{{ route('sites.home', ['id' => $vars['site_id']]) }}">Site options</a>
+		<a href="{{ route('sites.home', ['id' => $vars['site_id']]) }}">{{ $vars['site']->name }} options</a>
 		<hr />
 	</div>
 
@@ -20,10 +20,17 @@
 			{!! csrf_field() !!}
 
 			<div class="form-group">
-				<label for="tags" class="col-sm-2 control-label">Tags</label>
+				<label for="tags" class="col-sm-2 control-label">Lists</label>
 				<div class="col-sm-10 ">
 					<input type="text" class="form-control" name="tags" id="tags" value="">
-					<p class="help-block">Comma seperate tags if multiples are being added</p>
+					@if(count($vars['tags']))
+						<p class="help-block">Lists:
+							@foreach($vars['tags'] as $tag)
+								<a class="tag" href="#{{ $tag->name }}">{{ $tag->name }}</a>
+							@endforeach
+						</p>
+					@endif
+					<p class="help-block">Comma seperate lists if multiples are being added</p>
 				</div>
 			</div>
 
@@ -57,4 +64,20 @@
 
 	</div>
 
+@endsection
+
+@section('footer')
+	<script type="text/javascript">
+	$('document').ready(function() {
+		$('.tag').on('click',function(e) {
+			e.preventDefault();
+			$val = $('#tags').val();
+			if ($val && $val != $(this).html()) {
+				$('#tags').val($val + ',' + $(this).html());
+			} else {
+				$('#tags').val($(this).html());
+			}
+		});
+	});
+	</script>
 @endsection

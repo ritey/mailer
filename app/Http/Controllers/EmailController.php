@@ -40,13 +40,36 @@ class EmailController extends Controller {
 		return view('emails',compact('vars'));
 	}
 
+	public function unsubscribe($id = '')
+	{
+		$site = '';
+		if ($id) {
+			$data = explode('|', $id);
+			if (count($data) == 2) {
+				$site = $this->sites->where('id',$data[1])->first();
+				$email = $this->emails->where('email',trim(strtolower(base64_decode($data[0]))))->first();
+				$result = $email->sites()->detach($data[1]);
+				$result = $email->tags()->detach($email->id);
+			}
+		}
+
+		$vars = [
+			'email' => isset($data[0]) ? base64_decode($data[0]) : '',
+			'site' => is_object($site) ? $site : '',
+		];
+		return view('unsubscribe',compact('vars'));
+	}
+
 	public function add($site_id)
 	{
+		$site = $this->sites->where('id',$site_id)->first();
 		$vars = [
 			'email' 	=> '',
 			'legend' 	=> 'Add emails',
 			'action' 	=> route('sites.emails.create', ['id' => $site_id]),
 			'site_id'	=> $site_id,
+			'site'		=> $site,
+			'tags'		=> $site->tags,
 		];
 		return view('email_form',compact('vars'));
 	}
@@ -54,12 +77,15 @@ class EmailController extends Controller {
 	public function send($site_id)
 	{
 		$site = $this->sites->where('id',$site_id)->first();
+		$config = $this->settings->getBySiteId($site_id);
 		$vars = [
 			'email' 	=> '',
 			'legend' 	=> 'Send email',
 			'action' 	=> route('sites.emails.mail', ['id' => $site_id]),
 			'tags'		=> $site->tags,
 			'site_id'	=> $site_id,
+			'site'		=> $site,
+			'config'	=> $config,
 		];
 		return view('mail_form',compact('vars'));
 	}
@@ -94,9 +120,10 @@ class EmailController extends Controller {
 					if ($site->id == $site_id) {
 
 						$data['email'] = $email->email;
+						$unsubscribe_link = "To unsubscribe click here: " . route('unsubscribe' , [ 'id' => base64_encode($data['email']).'|'.$site_id]);
 						$data['subject'] = $request->input('subject');
-						$data['html'] = $request->input('message');
-						$data['text'] = $request->input('plain_message');
+						$data['html'] = $request->input('message') . "<p>".$unsubscribe_link."</p>";
+						$data['text'] = $request->input('plain_message') . "\n\n\n" . $unsubscribe_link;
 
 						$result = Mailgun::send(['emails.email', 'emails.text'], $data, function($message) use ($data)
 						{
@@ -186,12 +213,30 @@ getClientOriginalExtension();
 		}
 	}
 
-	public function emails($site_id)
+	public function emails($site_id, $tag = '')
 	{
+		$site = $this->sites->where('id',$site_id)->first();
+		//$emails = $this->sites->where('id',$site_id)->first()->emails;
+		$emails = $this->emails
+					->whereHas('sites', function($query) use($site_id) {
+						$query->where('site_id','=',$site_id);
+					});
+		if (!empty($tag)) {
+			$emails = $this->emails
+					->whereHas('sites', function($query) use($site_id) {
+						$query->where('site_id','=',$site_id);
+					})->whereHas('tags', function($query) use($tag) {
+						$query->where('tags.name','=',$tag);
+					});
+		}
+		$emails = $emails->get();
 		$vars = [
-			'legend' => 'Emails',
-			'emails' => $this->sites->where('id',$site_id)->first()->emails,
-			'site_id' => $site_id,
+			'legend' 	=> 'Emails',
+			'emails' 	=> $emails,
+			'site_id' 	=> $site_id,
+			'site'		=> $site,
+			'tags'		=> $site->tags,
+			'tag'		=> $tag,
 		];
 		return view('emails',compact('vars'));
 	}

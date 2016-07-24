@@ -1,5 +1,8 @@
-@extends('master')
+@extends('base')
 
+@section('metas')
+<title>Unsubscribed</title>
+@endsection
 @section('head')
 
         <style>
@@ -36,6 +39,6 @@
 
 @section('content')
     <div class="content">
-        <div class="title">Mailshot.io</div>
+        <div class="title">{{ $vars['email'] or 'You\'re' }} successfully unsubscribed</div>
     </div>
 @endsection

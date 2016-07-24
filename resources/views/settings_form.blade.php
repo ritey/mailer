@@ -42,7 +42,7 @@
 			<div class="form-group">
 				<label for="value" class="col-sm-2 control-label">Value</label>
 				<div class="col-sm-10 ">
-					<textarea name="value" id="value" class="form-control">{{ $vars['setting']['value'] or '' }}</textarea>
+					<textarea name="value" id="value" rows="8" class="form-control">{{ $vars['setting']['value'] or '' }}</textarea>
 				</div>
 			</div>
 			<div class="form-group">
