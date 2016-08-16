@@ -122,7 +122,7 @@ class EmailController extends Controller {
 						$data['email'] = $email->email;
 						$unsubscribe_link = "To unsubscribe click here: " . route('unsubscribe' , [ 'id' => base64_encode($data['email']).'|'.$site_id]);
 						$data['subject'] = $request->input('subject');
-						$data['html'] = $request->input('message') . "<p>".$unsubscribe_link."</p>";
+						$data['html'] = $request->input('message') . "<p align=\"center\">".$unsubscribe_link."</p>";
 						$data['text'] = $request->input('plain_message') . "\n\n\n" . $unsubscribe_link;
 
 						$result = Mailgun::send(['emails.email', 'emails.text'], $data, function($message) use ($data)
